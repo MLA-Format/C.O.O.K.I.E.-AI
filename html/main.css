@@ -103,8 +103,6 @@ form {
 textarea,
 input[type="text"] {
     width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
     padding: 1rem 1.2rem;
     border: 1.5px solid #bae6fd;
     border-radius: 10px;
