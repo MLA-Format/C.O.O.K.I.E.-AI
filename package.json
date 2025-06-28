@@ -18,6 +18,7 @@
   "homepage": "https://github.com/MLA-Format/GemiKnights_Project#readme",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "nodemon": "^3.1.10"
   }
