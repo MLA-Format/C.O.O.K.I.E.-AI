@@ -79,7 +79,9 @@ app.get('/api/recipe/:idx/text', (req, res) => {
     if (recipe.instructions && recipe.instructions.length) {
         text += `\nInstructions:\n`;
         recipe.instructions.forEach((step, i) => {
-            text += `  ${i+1}. ${step}\n`;
+            // Remove leading numbers, dots, and spaces (e.g., '1. ', '2) ', etc.)
+            const cleanStep = step.replace(/^\s*\d+\s*[\.|\)]?\s*/, '');
+            text += `  ${i+1}. ${cleanStep}\n`;
         });
     }
     text += '\n';
@@ -95,7 +97,7 @@ app.post('/api/generate', async (req, res) => {
         // Request Gemini to generate recipes
         const response = await client.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: `Create an array of 3 unique recipes with these restrictions, where any ingredient listed is also a restriction: ${restrictions}. Prompt: ${prompt}. Each recipe should be a JSON object with the following fields: title, description, servings, ingredients (numbered list as array), tools (numbered list as array), instructions (numbered list as array). Return only a JSON array, no extra text. Example: ${JSON.stringify([exampleRecipe, exampleRecipe, exampleRecipe])}`,
+            contents: `Create an array of 3 unique, professional-quality recipes for '${prompt}'. ALL recipes must be for '${prompt}' (not inspired by or related to other foods). Each recipe must strictly follow any dietary restrictions: ${restrictions}. Each recipe should be a JSON object with the following fields: title, description, servings, ingredients (numbered list as array, each with clear measurements/quantities, e.g. '2 cups grated zucchini'), tools (numbered list as array), instructions (numbered list as array). Return only a JSON array, no extra text. Example: ${JSON.stringify([exampleRecipe, exampleRecipe, exampleRecipe])}`,
         });
         let recipes = [];
         // Parse Gemini response as JSON
