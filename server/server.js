@@ -6,9 +6,10 @@ const app = express();
 
 const { GoogleGenAI } = require("@google/genai");
 const fs = require("node:fs");
+require('dotenv').config(); // Load environment variables from .env
 
 // Initialize Gemini API client
-const client = new GoogleGenAI({ apiKey: "REDACTED" });
+const client = new GoogleGenAI({ apiKey: process.env.API_KEY});
 
 // Example recipe structure for prompt
 const exampleRecipe = {
